@@ -20,11 +20,12 @@ from rpi_vision.agent.capture import PiCameraStream
 logging.basicConfig()
 logging.getLogger().setLevel(logging.INFO)
 
-# Initialize the display
+# initialize the display
 pygame.init()
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 capture_manager = PiCameraStream(resolution=(max(320, screen.get_width()), \
-                max(240, screen.get_height())), rotation=180, preview=False)
+                        max(240, screen.get_height())), rotation=180, preview=False)
+
 
 def parse_args():
     # Add relevant arguments if needed.
@@ -75,12 +76,11 @@ def main(args):
 
         # Draw it
         screen.blit(img, (0,0))
-
         timestamp = time.monotic()
 
         # Model logic
 
-        logging.info(prediction)
+        # Model and prediction display logic
         delta = time.monotonic() - timestamp
         logging.info("%s inference took %d ms, %0.1f FPS" % ("TFLite" \
                     if arges.tflite else "TF", delta * 1000, 1 / delta))
@@ -92,5 +92,20 @@ def main(args):
         fpstext_position = (screen.get_width() - 10, 10) # Top right corner
         screen.blit(fpstext_surface, fpstext_surface.get_rect(topright=fpstext_position))
 
-        # for p in prediction:
-        #     label, name, conf = p
+        prediction = ['', '']
+
+        for p in prediction:
+            label, name, conf = p
+        else:
+            last_seen.append(None)
+            last_seen.pop(0)
+            if last_seen.count(None) == len(last_seen):
+                last_spoken = None
+
+        pygame.display.update()
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        capture_manager.stop()
