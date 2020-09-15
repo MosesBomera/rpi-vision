@@ -1,6 +1,5 @@
 import time
 import logging
-import argparse
 import pygame
 import os
 import sys
@@ -26,15 +25,10 @@ screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 capture_manager = PiCameraStream(resolution=(max(320, screen.get_width()), \
                         max(240, screen.get_height())), rotation=180, preview=False)
 
-
-def parse_args():
-    # Add relevant arguments if needed.
-    raise NotImplementedError
-
 last_seen = [None] * 10
 last_spoken = None
 
-def main(args):
+def main():
     global last_spoken
 
     for event in pygame.event.get():
@@ -106,6 +100,6 @@ def main(args):
 
 if __name__ == "__main__":
     try:
-        main(args)
+        main()
     except KeyboardInterrupt:
         capture_manager.stop()
