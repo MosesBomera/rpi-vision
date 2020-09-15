@@ -106,6 +106,6 @@ def main(args):
 
 if __name__ == "__main__":
     try:
-        main()
+        main(args)
     except KeyboardInterrupt:
         capture_manager.stop()
